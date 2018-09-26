@@ -1,0 +1,92 @@
+############################################
+#
+Beta script for counting smFISH spots in worms
+Last edited 9th of June 2016
+#
+############################################
+
+Requires python 3 or newer versions
+
+**Updated June
+- output csv as worm_analyzed.csv in experiment folder
+- added GFP channel. Name of the tiff files should start with "GFP" 
+
+**Status
+Measuring amount of spots functional
+Measuring length NOT functional
+
+############################################
+
+
+REQUIRED INSTALLED PACKAGES
+- numpy
+- pyQT4
+- matplotlib
+- copy
+- skimage
+- pickle
+- PIL
+- scipy
+- glob
+- tifffile (tifffile script is added in case the package can not be installed)
+
+
+SCRIPTS
+- smFISH_beta 		(main script)
+- dialog.py		(first dialog for giving more information on labels and channels)
+- FindmRNA.py		(functions for finding spots/regions in 3D, adjusting images)
+- graphdialog.py	(second dialog presenting graph, number of spots vs. threshold)
+- Images_worm.py	(functions for loading images of the worms)
+- LogFilter.py		(function replacing matlab fspecial function with LoG)
+- Main_calculations.py	(containing the main object)
+- mainwindow.ui		(user interface of the main window)
+- mRNA_counting.py	(functions for calculating the amount of spots in 3d)
+- test_CC.py		(function for finding regions in 3D, replacing matlab function)
+
+
+CONTROLS
+General controls
+[q, w, e, r] - z-stack [-1, +1, -5, +5]
+scroll mouse - move up or down in z-stacks
+[z, x, c] - channels
+delete - remove POI, ROI, thershold point
+POI controls
+right mouse button - open label list
+left mouse button - add label
+ROI controls
+enter - next label
+[=] - copy ROI from below
+[-] - copy ROI from above
+
+
+SHORT GUIDE
+smFISH_beta is the main script for starting the interface
+1 "File" -> "Open new" for starting a new project you need to select the folder containing "worm" folders. 
+2 Start with annotating POI for each of the worms. Project can be saved at any time
+3 Then annotate the ROI for each of the worms for each of the labels
+4 The threshold is set while looking at the first label in each of the worms. The set button saves 
+the threshold and if there are more channels, it will switch to the next channel.
+5 Calculate the spots in the other labels in each of the worms for all available channels (excl DAPI).
+6 Save project. Now all data can be found in the saved object written in dictionaries
+
+
+SAVED OBJECT plk
+WormPaths  			(all paths of images)
+images *empty when saved	
+POI				(Point of interest - worm ["x,y,label"])
+ROI				(Region of interest - worm - label - z-stack ["x,y,label"]
+list_worms
+labels				
+labels_l 			(when length is measured, not functional yet!)
+channels
+exp_folder
+spots				(found spots - worm - channel - label)
+
+
+REMARKS
+Image file names should be in the format: "Channel" + *
+Channel names: DAPI, Cy5 or Alexa594. 
+The channel names can be replaced by changing MainCal object - channels "DAPI" or by replacing 
+the labels in DialogInput object - checkboxes
+
+Interfaces are made with PyQt designer
